@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "MyPokedex"
 include(":app")
 include(":feature:auth:domain")
+include(":feature:auth:infrastructure")

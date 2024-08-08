@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.auth.domain"
+    namespace = "com.auth.infrastructure"
     compileSdk = 34
 
     defaultConfig {
@@ -33,8 +33,13 @@ android {
 }
 
 dependencies {
-    implementation(libs.corrutines)
-    implementation(libs.androidx.annotation)
-    testImplementation(libs.junit)
+    implementation(project(":feature:auth:domain"))
 
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.firebaseBom))
+    implementation(libs.corrutines)
+    implementation(libs.firebase.auth)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation (libs.kotlinx.coroutines.test)
 }
