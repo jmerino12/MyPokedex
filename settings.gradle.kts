@@ -23,3 +23,5 @@ rootProject.name = "MyPokedex"
 include(":app")
 include(":feature:auth:domain")
 include(":feature:auth:infrastructure")
+include(":feature:pokemon:domain")
+include(":feature:pokemon:infrastructure")
