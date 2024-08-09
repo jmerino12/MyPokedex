@@ -43,6 +43,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 corrutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "corrutinesKotlin" }
 firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoomVersion" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-store = { group = "com.google.firebase", name = "firebase-firestore" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }

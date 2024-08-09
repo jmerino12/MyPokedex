@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pokemon.infrastructure"
+    namespace = "com.tag.domain"
     compileSdk = 34
 
     defaultConfig {
@@ -34,14 +34,11 @@ android {
 
 dependencies {
     implementation(project(":feature:pokemon:domain"))
-
-    implementation(libs.androidx.core.ktx)
+    implementation(project(":feature:auth:domain"))
+    implementation(libs.androidx.annotation)
     implementation(libs.corrutines)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.logging.interceptor)
-
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
     testImplementation (libs.kotlinx.coroutines.test)
+
 }

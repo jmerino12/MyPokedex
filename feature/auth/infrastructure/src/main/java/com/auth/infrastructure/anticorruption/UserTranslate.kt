@@ -6,7 +6,11 @@ import com.google.firebase.auth.FirebaseUser
 class UserTranslate {
     companion object {
         fun fromDtoToDomain(firebaseUser: FirebaseUser): User {
-            return User(firebaseUser.email.toString(), firebaseUser.displayName.toString())
+            return User(
+                firebaseUser.uid,
+                firebaseUser.email.toString(),
+                firebaseUser.displayName.toString(),
+            )
         }
     }
 }

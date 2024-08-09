@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pokemon.infrastructure"
+    namespace = "com.tag.infrastructure"
     compileSdk = 34
 
     defaultConfig {
@@ -34,12 +34,13 @@ android {
 
 dependencies {
     implementation(project(":feature:pokemon:domain"))
+    implementation(project(":feature:auth:domain"))
+    implementation(project(":feature:tag:domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.corrutines)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.logging.interceptor)
+    implementation(platform(libs.firebaseBom))
+    implementation(libs.firebase.store)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
