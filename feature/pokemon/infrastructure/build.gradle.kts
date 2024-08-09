@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -33,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:network"))
     implementation(project(":feature:pokemon:domain"))
 
     implementation(libs.androidx.core.ktx)
@@ -40,6 +43,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.logging.interceptor)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.ksp)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
