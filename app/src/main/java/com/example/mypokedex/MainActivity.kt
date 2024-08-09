@@ -27,6 +27,7 @@ import com.auth.ui.register.RegisterViewModel
 import com.example.mypokedex.ui.theme.MyPokedexTheme
 import com.pokemon.ui.screen.PokemonScreen
 import com.pokemon.ui.screen.PokemonViewModel
+import com.tag.ui.TagScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -99,9 +100,10 @@ fun PokedexNavGraph(
         }
 
         composable("home") {
-            val viewModel = hiltViewModel<PokemonViewModel>()
+            /*val viewModel = hiltViewModel<PokemonViewModel>()
             val state by viewModel.uiState.collectAsState()
-            PokemonScreen(pokemonUiState = state, getPokemons = { viewModel.getPokemons() })
+            PokemonScreen(pokemonUiState = state, getPokemons = { viewModel.getPokemons() })*/
+            TagScreen()
         }
 
     }
