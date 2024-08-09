@@ -18,44 +18,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object PokemonInfrastructureModule {
 
-    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        this.level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    @Provides
-    @Singleton
-    fun providesGsonConvertFactory(): GsonConverterFactory = GsonConverterFactory.create()
-
-    @Provides
-    @Singleton
-    fun providesHttpClient(): OkHttpClient {
-        return OkHttpClient().newBuilder().addInterceptor(interceptor).build()
-    }
-
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(
-        httpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .client(httpClient)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
-    }
-
     @Provides
     @Singleton
     fun providesPokemonServiceApi(retrofit: Retrofit): PokemonService {
         return retrofit.create(PokemonService::class.java)
     }
 
+
     @Provides
     @Singleton
-    fun providesPokemonRemoteDatasource(pokemonService: PokemonService): PokemonRepository =
-        PokemonRetrofitRepository(pokemonService)
-
+    fun providesPokemonRepository(
+        pokemonService: PokemonService
+    ): PokemonRepository = PokemonRetrofitRepository(pokemonService)
 
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pokemon.infrastructure"
+    namespace = "com.core.network"
     compileSdk = 34
 
     defaultConfig {
@@ -26,28 +26,22 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(project(":feature:pokemon:domain"))
-    implementation(project(":core:network"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.corrutines)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation(libs.retrofit.converter.gson)
+
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.ksp)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation (libs.kotlinx.coroutines.test)
 }

@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class PokemonRetrofitRepository @Inject constructor(private val pokemonService: PokemonService) :
+class PokemonRetrofitRepository @Inject
+constructor(private val pokemonService: PokemonService) :
     PokemonRepository {
     override fun getPokemonList(): Flow<List<Pokemon>> {
         return flow {
