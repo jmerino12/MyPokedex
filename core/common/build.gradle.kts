@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.auth.infrastructure"
+    namespace = "com.core.common"
     compileSdk = 34
 
     defaultConfig {
@@ -26,26 +26,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(project(":feature:auth:domain"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(platform(libs.firebaseBom))
-    implementation(libs.corrutines)
-    implementation(libs.firebase.auth)
-
     implementation(libs.hilt.android)
     ksp(libs.hilt.ksp)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation (libs.kotlinx.coroutines.test)
 }

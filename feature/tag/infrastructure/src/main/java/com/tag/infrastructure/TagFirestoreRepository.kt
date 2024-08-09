@@ -46,21 +46,17 @@ class TagFirestoreRepository(private val firebase: FirebaseFirestore) : TagRepos
 
     override fun getTagByName(name: String, user: User?): Flow<Tag?> = callbackFlow {
         try {
-            // Obtén la referencia de la colección del usuario
             val collection = firebase.collection("tags/${user?.userId}")
 
-            // Realiza la consulta para encontrar el documento con el nombre del tag
             val query = collection.whereEqualTo("tag_name", name)
 
-            // Escucha los cambios en la consulta
             val listenerRegistration = query.addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
-                    close(exception) // Cierra el flujo con un error si ocurre
+                    close(exception)
                     return@addSnapshotListener
                 }
 
                 if (snapshot != null && !snapshot.isEmpty) {
-                    // Mapear los resultados a objetos Tag
                     val tags = snapshot.documents.mapNotNull { document ->
                         val tagName = document.getString("tag_name")
                         val pokemonsData =
@@ -73,17 +69,16 @@ class TagFirestoreRepository(private val firebase: FirebaseFirestore) : TagRepos
                         }
                         tagName?.let { Tag(it, pokemons) }
                     }
-                    // Emitir el primer tag encontrado o null si no hay resultados
                     trySend(tags.firstOrNull())
                 } else {
-                    trySend(null) // Emitir null si no se encontraron resultados
+                    trySend(null)
                 }
             }
 
-            awaitClose { listenerRegistration.remove() } // Limpiar el listener cuando el flujo se cierra
+            awaitClose { listenerRegistration.remove() }
 
         } catch (e: Exception) {
-            close(e) // Cierra el flujo con un error en caso de excepción
+            close(e)
         }
     }
 
