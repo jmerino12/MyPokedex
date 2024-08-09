@@ -25,6 +25,8 @@ import com.auth.ui.login.LoginViewModel
 import com.auth.ui.register.RegisterScreen
 import com.auth.ui.register.RegisterViewModel
 import com.example.mypokedex.ui.theme.MyPokedexTheme
+import com.pokemon.ui.screen.PokemonScreen
+import com.pokemon.ui.screen.PokemonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -97,9 +99,10 @@ fun PokedexNavGraph(
         }
 
         composable("home") {
-            Text(text = "Hola")
+            val viewModel = hiltViewModel<PokemonViewModel>()
+            val state by viewModel.uiState.collectAsState()
+            PokemonScreen(pokemonUiState = state, getPokemons = { viewModel.getPokemons() })
         }
-
 
     }
 }

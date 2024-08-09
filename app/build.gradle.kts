@@ -56,6 +56,7 @@ dependencies {
 
     implementation(project(":feature:auth:ui"))
     implementation(project(":feature:auth:infrastructure"))
+    implementation(project(":feature:pokemon:ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

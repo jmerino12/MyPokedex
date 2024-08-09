@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pokemon.infrastructure"
+    namespace = "com.pokemon.ui"
     compileSdk = 34
 
     defaultConfig {
@@ -32,21 +32,31 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":feature:pokemon:domain"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.corrutines)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.logging.interceptor)
+    implementation(project(":feature:pokemon:infrastructure"))
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.ksp)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation (libs.kotlinx.coroutines.test)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
