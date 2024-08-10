@@ -49,4 +49,6 @@ class TagProxyRepository @Inject constructor(
             pokemonDao.insertPokemons(newPokemonEntities)
         }
     }
+
+    override suspend fun getAllTags(): Flow<List<Tag>> = tagLocalRepository.getAllTags()
 }

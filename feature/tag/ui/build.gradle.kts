@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -40,6 +42,16 @@ android {
 
 dependencies {
 
+    implementation(project(":core:common"))
+    implementation(project(":feature:tag:domain"))
+    implementation(project(":feature:tag:infrastructure"))
+
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.ksp)
+
+
+    implementation(libs.lottie.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

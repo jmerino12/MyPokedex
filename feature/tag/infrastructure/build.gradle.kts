@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -34,10 +36,16 @@ android {
 
 dependencies {
     implementation(project(":core:database"))
+
+    implementation(project(":feature:tag:domain"))
     implementation(project(":feature:auth:domain"))
     implementation(project(":feature:pokemon:domain"))
-    implementation(project(":feature:tag:domain"))
     implementation(project(":feature:pokemon:infrastructure"))
+
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.ksp)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.corrutines)

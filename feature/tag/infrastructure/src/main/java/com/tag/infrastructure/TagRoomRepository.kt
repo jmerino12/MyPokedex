@@ -1,6 +1,7 @@
 package com.tag.infrastructure
 
 import com.core.database.tag.dao.TagDao
+import com.pokemon.infrastructure.anticorruption.PokemonTranslate
 import com.tag.anticorruption.TagTranslate
 import com.tag.contracts.TagLocalRepository
 import com.tag.domain.model.Tag
@@ -32,6 +33,22 @@ class TagRoomRepository @Inject constructor(
         return tagDao.getTagByName(tagName).map {
             it?.let {
                 TagTranslate.fromEntityTagToDomain(it)
+            }
+        }
+    }
+
+    override fun getAllTags(): Flow<List<Tag>> {
+        return tagDao.getAllWithPokemons().map { tagsWithPokemonsList ->
+            tagsWithPokemonsList.map { tagsWithPokemons ->
+                Tag(
+                    idTag = tagsWithPokemons.tag.id,
+                    name = tagsWithPokemons.tag.name,
+                    pokemons = tagsWithPokemons.pokemons.map {
+                        PokemonTranslate.fromEntityToDomain(
+                            it
+                        )
+                    }
+                )
             }
         }
     }

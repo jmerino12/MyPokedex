@@ -10,10 +10,13 @@ import com.tag.domain.repository.TagRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class TagService(
+class TagService @Inject constructor(
     private val tagRepository: TagRepository,
 ) {
+    suspend fun getAllTag() = tagRepository.getAllTags()
+
     suspend fun createTag(tagName: String, pokemonList: List<Pokemon>) {
         val existingTag = tagRepository.getTagByName(tagName).first()
         if (existingTag != null) {

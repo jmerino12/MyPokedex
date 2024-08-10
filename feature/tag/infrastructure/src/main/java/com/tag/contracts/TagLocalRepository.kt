@@ -9,4 +9,5 @@ interface TagLocalRepository {
     suspend fun deleteTagByName(tagName: String)
     suspend fun update(tag: Tag)
     fun getTagByName(tagName: String): Flow<Tag?>
+    fun getAllTags(): Flow<List<Tag>>
 }

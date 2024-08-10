@@ -28,6 +28,7 @@ import com.example.mypokedex.ui.theme.MyPokedexTheme
 import com.pokemon.ui.screen.PokemonScreen
 import com.pokemon.ui.screen.PokemonViewModel
 import com.tag.ui.TagScreen
+import com.tag.ui.TagViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,7 +61,7 @@ fun PokedexNavGraph(
     LaunchedEffect(state) {
         when (state) {
 
-            AuthUiState.AUTHENTICATED -> navHostController.navigate("home") {
+            AuthUiState.AUTHENTICATED -> navHostController.navigate("tags") {
 
             }
 
@@ -73,7 +74,7 @@ fun PokedexNavGraph(
     }
 
 
-    NavHost(navController = navHostController, startDestination = "login") {
+    NavHost(navController = navHostController, startDestination = "tags") {
         composable("login") {
             val viewModel = hiltViewModel<LoginViewModel>()
             val state by viewModel.uiState.collectAsState()
@@ -100,10 +101,15 @@ fun PokedexNavGraph(
         }
 
         composable("home") {
-            /*val viewModel = hiltViewModel<PokemonViewModel>()
+            val viewModel = hiltViewModel<PokemonViewModel>()
             val state by viewModel.uiState.collectAsState()
-            PokemonScreen(pokemonUiState = state, getPokemons = { viewModel.getPokemons() })*/
-            TagScreen()
+            PokemonScreen(pokemonUiState = state, getPokemons = { viewModel.getPokemons() })
+        }
+
+        composable("tags") {
+            val viewModel = hiltViewModel<TagViewModel>()
+            val state by viewModel.uiState.collectAsState()
+            TagScreen(tagUiState = state, getTags = { viewModel.getAllTags() })
         }
 
     }
