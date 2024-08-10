@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +30,11 @@ class PokemonViewModel @Inject constructor(
                     if (it.isEmpty()) {
                         _uiState.value = PokemonUiState.EMPTY
                     } else {
-                        _uiState.value = PokemonUiState.SUCCESS(it)
+                        val pokemonsWithImages = it.map { pokemon ->
+                            val imageUrl = pokemonRepository.getPokemonDetail(pokemon.url).first()
+                            pokemon.copy(image = imageUrl.image)
+                        }
+                        _uiState.value = PokemonUiState.SUCCESS(pokemonsWithImages)
                     }
                 }
             } catch (e: Exception) {

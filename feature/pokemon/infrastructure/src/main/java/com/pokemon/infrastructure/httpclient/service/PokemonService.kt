@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Url
 
 interface PokemonService {
-    @GET("pokemon?limit=50&offset=0")
+    @GET("pokemon?limit=10&offset=0")
     suspend fun getPokemons(): PokemonsDto
 
     @GET

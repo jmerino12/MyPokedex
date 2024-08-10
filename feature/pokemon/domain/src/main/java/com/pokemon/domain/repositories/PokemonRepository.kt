@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
     fun getPokemonList(): Flow<List<Pokemon>>
+    fun getPokemonDetail(url: String): Flow<Pokemon>
 }

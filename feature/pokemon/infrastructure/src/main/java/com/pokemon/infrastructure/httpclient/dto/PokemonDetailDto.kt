@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class PokemonDetailDto(
     @SerializedName("sprites")
     val sprites: SpritesDto,
+    @SerializedName("name")
+    val name: String,
 )
 
 data class SpritesDto(

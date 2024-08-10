@@ -18,4 +18,10 @@ constructor(private val pokemonService: PokemonService) :
             })
         }
     }
+
+    override fun getPokemonDetail(url: String): Flow<Pokemon> {
+        return flow {
+            emit(PokemonTranslate.fromDtoDetailToDomain(pokemonService.getPokemonInfo(url), url))
+        }
+    }
 }

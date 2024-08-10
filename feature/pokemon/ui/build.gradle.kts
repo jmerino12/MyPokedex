@@ -48,7 +48,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.ksp)
 
-
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -149,7 +149,7 @@ private fun LoginScreenPreview() {
     LoginScreen(
         loginUiState = LoginUiState.INITIAL,
         goToRegisterScreen = {},
-        onLogin = { param1, param2 -> })
+        onLogin = { _, _ -> })
 }
 
 

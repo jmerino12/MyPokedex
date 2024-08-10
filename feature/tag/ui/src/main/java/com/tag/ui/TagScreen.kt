@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.rounded.Close
@@ -49,29 +51,24 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 fun TagScreen(
     modifier: Modifier = Modifier,
     tagUiState: TagUiState,
-    getTags: () -> Unit
+    getTags: () -> Unit,
+    goToPokemonScreen: () -> Unit
 ) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_state))
+    val composition by
+    rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_state))
     LaunchedEffect(Unit) {
         getTags()
     }
-    var isInSelectionMode by remember {
-        mutableStateOf(false)
-    }
-    val selectedItems = remember {
-        mutableStateListOf<String>()
-    }
-
-    val resetSelectionMode = {
-        isInSelectionMode = false
-        selectedItems.clear()
-    }
 
     Scaffold(topBar = {
-        if (isInSelectionMode) {
-            SelectionModeTopAppBar(
-                selectedItems = selectedItems,
-                resetSelectionMode = resetSelectionMode,
+        if (tagUiState is TagUiState.EMPTY) {
+            TopAppBar(
+                title = { Text("Pokedex") },
+                actions = {
+                    IconButton(onClick =  goToPokemonScreen ) {
+                        Icon(Icons.Default.AddCircle, contentDescription = "Add")
+                    }
+                }
             )
         } else {
             CenterAlignedTopAppBar(
@@ -123,99 +120,8 @@ fun TagScreen(
 }
 
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun SelectionModeTopAppBar(
-    selectedItems: SnapshotStateList<String>,
-    resetSelectionMode: () -> Unit
-) {
-    TopAppBar(
-        title = {
-            Text(
-                text = "${selectedItems.size} selected",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = MaterialTheme.colorScheme.onBackground,
-                ),
-            )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = resetSelectionMode,
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Close,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground,
-                )
-            }
-        },
-        actions = {
-            var isDropDownVisible by remember {
-                mutableStateOf(false)
-            }
-            Box(
-                modifier = Modifier,
-            ) {
-                IconButton(
-                    onClick = {
-                        isDropDownVisible = true
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground,
-                    )
-                }
-                DropdownMenu(
-                    expanded = isDropDownVisible,
-                    onDismissRequest = {
-                        isDropDownVisible = false
-                    }
-                ) {
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Move",
-                            )
-                        },
-                        onClick = {
-                            isDropDownVisible = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Outlined.Edit,
-                                contentDescription = null
-                            )
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Delete",
-                            )
-                        },
-                        onClick = {
-                            isDropDownVisible = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Outlined.Delete,
-                                contentDescription = null
-                            )
-                        },
-                    )
-                }
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-    )
-}
-
 @Preview
 @Composable
 private fun TagScreenPreview() {
-    TagScreen(tagUiState = TagUiState.EMPTY, getTags = {})
+    TagScreen(tagUiState = TagUiState.EMPTY, getTags = {}, goToPokemonScreen = {})
 }

@@ -100,16 +100,22 @@ fun PokedexNavGraph(
             )
         }
 
-        composable("home") {
+        composable("pokemon") {
             val viewModel = hiltViewModel<PokemonViewModel>()
             val state by viewModel.uiState.collectAsState()
-            PokemonScreen(pokemonUiState = state, getPokemons = { viewModel.getPokemons() })
+            PokemonScreen(
+                pokemonUiState = state,
+                getPokemons = { viewModel.getPokemons() },
+                onBackButton = { navHostController.navigateUp() })
         }
 
         composable("tags") {
             val viewModel = hiltViewModel<TagViewModel>()
             val state by viewModel.uiState.collectAsState()
-            TagScreen(tagUiState = state, getTags = { viewModel.getAllTags() })
+            TagScreen(
+                tagUiState = state,
+                getTags = { viewModel.getAllTags() },
+                goToPokemonScreen = { navHostController.navigate("pokemon") })
         }
 
     }
