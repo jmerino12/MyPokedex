@@ -55,7 +55,7 @@ class TagProxyRepositoryTest : PokedexRomDatabase() {
         val tagName = "tagName"
         val pokemonLists = listOf(Pokemon("Pikachu", null))
         val tag = Tag(name = tagName, pokemons = pokemonLists)
-        Mockito.`when`(tagLocalRepository.insertTag(tag)).thenReturn(flow { emit(1L) })
+        Mockito.`when`(tagLocalRepository.insertTag(tag)).thenReturn(1L)
         Mockito.`when`(tagLocalRepository.getTagByName(tagName))
             .thenReturn(flow { emit(Tag(1L, tagName, pokemonLists)) })
 
@@ -76,7 +76,7 @@ class TagProxyRepositoryTest : PokedexRomDatabase() {
         val tagName = "tagName"
         val pokemonLists = listOf<Pokemon>()
         val tag = Tag(name = tagName, pokemons = pokemonLists)
-        Mockito.`when`(tagLocalRepository.insertTag(tag)).thenReturn(flow { emit(1L) })
+        Mockito.`when`(tagLocalRepository.insertTag(tag)).thenReturn(1L)
         Mockito.`when`(tagLocalRepository.getTagByName(tagName))
             .thenReturn(flow { emit(Tag(1L, tagName, pokemonLists)) })
 
@@ -98,7 +98,7 @@ class TagProxyRepositoryTest : PokedexRomDatabase() {
         val pokemonLists = listOf(Pokemon("Pikachu", null), Pokemon("Charmander", null))
 
         val tag = Tag(name = tagName, pokemons = pokemonLists)
-        Mockito.`when`(tagLocalRepository.insertTag(tag)).thenReturn(flow { emit(1L) })
+        Mockito.`when`(tagLocalRepository.insertTag(tag)).thenReturn(1L)
         Mockito.`when`(tagLocalRepository.getTagByName(tagName))
             .thenReturn(flow { emit(Tag(1L, tagName, pokemonLists)) })
         tagProxyRepository.createTag(tag)
@@ -120,37 +120,33 @@ class TagProxyRepositoryTest : PokedexRomDatabase() {
 
         val tag = Tag(name = tagName, pokemons = pokemonLists)
 
-
-        // Ejecutar la creación del tag
         tagProxyRepository.createTag(tag)
 
         // Act
         tagProxyRepository.deleteTag(tagName)
 
-        // Recolectar el flujo y verificar si el tag fue eliminado
         val result = tagProxyRepository.getTagByName(tagName).firstOrNull()
 
         // Assert
-        Assert.assertNull(result) // Verifica que el tag ha sido eliminado
+        Assert.assertNull(result)
     }
 
     @Test
-    fun deleteTagWithPokemons() = runTest {
+    fun addPokemons_to_tag_real_implementation() = runTest {
         // Arrange
-        tagLocalRepository = Mockito.mock(TagLocalRepository::class.java)
+        tagLocalRepository = TagRoomRepository(tagDao)
         tagProxyRepository = TagProxyRepository(tagLocalRepository, pokemonDao)
-
         val tagName = "tagName"
         val pokemonLists = listOf(Pokemon("Pikachu", null), Pokemon("Charmander", null))
+
         val tag = Tag(name = tagName, pokemons = pokemonLists)
 
-        Mockito.`when`(tagLocalRepository.getTagByName(tagName))
-            .thenReturn(flowOf(tag))
-            .thenReturn(flowOf(null))  // Simula que el tag ha sido eliminado
+
+        tagProxyRepository.createTag(tag)
 
         // Act
-        tagProxyRepository.createTag(tag)
         tagProxyRepository.deleteTag(tagName)
+
         val result = tagProxyRepository.getTagByName(tagName).firstOrNull()
 
         // Assert

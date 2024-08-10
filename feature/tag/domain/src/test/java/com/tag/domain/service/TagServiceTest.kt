@@ -11,15 +11,21 @@ import com.tag.domain.model.Tag
 import com.tag.domain.repository.TagRepository
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.argThat
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
@@ -29,7 +35,6 @@ import org.mockito.kotlin.whenever
 class TagServiceTest {
     @Mock
     private lateinit var tagRepository: TagRepository
-
 
     @InjectMocks
     private lateinit var tagService: TagService
@@ -150,6 +155,46 @@ class TagServiceTest {
 
         assertEquals(newName, capturedTag.name)
         assertEquals(newPokemons, capturedTag.pokemons)
+    }
+
+
+    @Test
+    fun addPokemonsToTag_success() = runTest {
+        val existingTag = Tag(name = "existing", pokemons = listOf())
+        val pokemons = listOf(Pokemon("charmander", ""))
+
+
+        whenever(tagRepository.getTagByName(existingTag.name)).thenReturn(flow {
+            emit(
+                existingTag
+            )
+        })
+
+        //Act
+        tagService.addPokemonsToTag(tagName = existingTag.name, pokemons)
+
+        verify(tagRepository).addPokemonToTag(
+            eq(Tag(name = existingTag.name, pokemons = pokemons))
+        )
+    }
+
+    @Test(expected = TagNotFoundException::class)
+    fun addPokemonsToTag_throw() = runTest {
+        val existingTag = Tag(name = "existing", pokemons = listOf())
+        val pokemons = listOf(Pokemon("charmander", ""))
+
+
+        whenever(tagRepository.getTagByName(existingTag.name)).thenReturn(flow {
+            emit(
+                null
+            )
+        })
+
+        //Act
+        tagService.addPokemonsToTag(tagName = existingTag.name, pokemons)
+
+        //Assert
+        verify(tagRepository, never()).addPokemonToTag(any())
     }
 
 

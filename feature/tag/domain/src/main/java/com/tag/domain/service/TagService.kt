@@ -15,7 +15,6 @@ class TagService(
     private val tagRepository: TagRepository,
 ) {
     suspend fun createTag(tagName: String, pokemonList: List<Pokemon>) {
-
         val existingTag = tagRepository.getTagByName(tagName).first()
         if (existingTag != null) {
             throw TagAlreadyExistsException(R.string.tag_already_exists)
@@ -36,7 +35,7 @@ class TagService(
             throw TagAlreadyExistsException(R.string.tag_already_exists)
         }
 
-        tagRepository.updateTag(Tag( name = newName, pokemons = newPokemons))
+        tagRepository.updateTag(Tag(name = newName, pokemons = newPokemons))
     }
 
     suspend fun deleteTag(tagName: String) {
@@ -50,6 +49,14 @@ class TagService(
         val existingTag = tagRepository.getTagByName(tagName).first()
             ?: throw TagNotFoundException(R.string.tag_already_not_found)
         return flow { emit(existingTag) }
+    }
+
+    suspend fun addPokemonsToTag(tagName: String, pokemonList: List<Pokemon>) {
+        tagRepository.getTagByName(tagName).first()
+            ?: throw TagNotFoundException(
+                R.string.tag_already_not_found
+            )
+        tagRepository.addPokemonToTag(tag = Tag(name = tagName, pokemons = pokemonList))
     }
 
 }

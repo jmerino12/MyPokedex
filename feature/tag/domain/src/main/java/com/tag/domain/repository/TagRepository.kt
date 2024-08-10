@@ -8,4 +8,5 @@ interface TagRepository {
     suspend fun deleteTag(tagName: String)
     suspend fun updateTag(tag: Tag)
     fun getTagByName(name: String): Flow<Tag?>
+    suspend fun addPokemonToTag(tag: Tag)
 }

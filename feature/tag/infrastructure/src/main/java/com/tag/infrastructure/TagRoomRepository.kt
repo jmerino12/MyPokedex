@@ -13,11 +13,9 @@ class TagRoomRepository @Inject constructor(
     private val tagDao: TagDao,
 ) : TagLocalRepository {
 
-    override fun insertTag(tag: Tag): Flow<Long> {
-        return flow {
-            val tagEntity = TagTranslate.fromDomainToEntityTag(tag)
-            emit(tagDao.createTag(tagEntity))
-        }
+    override suspend fun insertTag(tag: Tag): Long {
+        val tagEntity = TagTranslate.fromDomainToEntityTag(tag)
+        return tagDao.createTag(tagEntity)
     }
 
     override suspend fun deleteTagByName(tagName: String) {

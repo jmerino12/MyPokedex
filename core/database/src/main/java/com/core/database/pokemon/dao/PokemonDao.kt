@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.core.database.pokemon.entity.PokemonEntity
+import com.core.database.tag.entity.TagEntity
 
 @Dao
 interface PokemonDao {

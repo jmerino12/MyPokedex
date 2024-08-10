@@ -15,7 +15,7 @@ class TagProxyRepository @Inject constructor(
     private val pokemonDao: PokemonDao
 ) : TagRepository {
     override suspend fun createTag(tag: Tag) {
-        val id = tagLocalRepository.insertTag(tag).first()
+        val id = tagLocalRepository.insertTag(tag)
         val pokemons = tag.pokemons.map {
             PokemonTranslate.fromDomainToEntity(it, id)
         }
@@ -36,5 +36,17 @@ class TagProxyRepository @Inject constructor(
 
     override fun getTagByName(name: String): Flow<Tag?> {
         return tagLocalRepository.getTagByName(name)
+    }
+
+    override suspend fun addPokemonToTag(tag: Tag) {
+        val myTag = tagLocalRepository.getTagByName(tag.name).firstOrNull()
+        if (myTag != null) {
+            val existingPokemonNames = tag.pokemons.map { it.name }.toSet()
+            val newPokemons = tag.pokemons.filter { it.name !in existingPokemonNames }
+            val newPokemonEntities = newPokemons.map {
+                PokemonTranslate.fromDomainToEntity(it, myTag.idTag)
+            }
+            pokemonDao.insertPokemons(newPokemonEntities)
+        }
     }
 }
