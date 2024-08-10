@@ -37,6 +37,7 @@ android {
 dependencies {
     implementation(project(":feature:pokemon:domain"))
     implementation(project(":core:network"))
+    implementation(project(":core:database"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.corrutines)

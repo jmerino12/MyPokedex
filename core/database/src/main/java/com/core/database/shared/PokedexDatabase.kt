@@ -2,6 +2,7 @@ package com.core.database.shared
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.core.database.pokemon.dao.PokemonDao
 import com.core.database.pokemon.entity.PokemonEntity
 import com.core.database.tag.dao.TagDao
 import com.core.database.tag.entity.TagEntity
@@ -15,5 +16,5 @@ import com.core.database.tag.entity.TagEntity
 )
 abstract class PokedexDatabase : RoomDatabase() {
     abstract fun tagDao(): TagDao
-
+    abstract fun pokemonDao(): PokemonDao
 }

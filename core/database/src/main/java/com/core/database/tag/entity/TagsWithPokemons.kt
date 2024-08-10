@@ -10,5 +10,5 @@ data class TagsWithPokemons(
         parentColumn = "id",
         entityColumn = "tagId"
     )
-    val tasks: List<PokemonEntity>?
+    val pokemons: List<PokemonEntity>
 )

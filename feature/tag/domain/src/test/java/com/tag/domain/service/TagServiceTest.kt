@@ -30,13 +30,10 @@ class TagServiceTest {
     @Mock
     private lateinit var tagRepository: TagRepository
 
-    @Mock
-    private lateinit var authRepository: AuthRepository
 
     @InjectMocks
     private lateinit var tagService: TagService
 
-    private val user = User("121", "jmerino1204@gmail.com", "jona")
 
     @Test(expected = TagAlreadyExistsException::class)
     fun createTag_withEmptyPokemonList_throw_TagAlreadyExistsException() = runTest {
@@ -44,12 +41,11 @@ class TagServiceTest {
         val tagName = "example"
         val pokemons = listOf<Pokemon>()
 
-        whenever(authRepository.authState).thenReturn(flow { emit(user) })
-        whenever(tagRepository.getTagByName(tagName, user)).thenReturn(flow {
+        whenever(tagRepository.getTagByName(tagName)).thenReturn(flow {
             emit(
                 Tag(
-                    tagName,
-                    listOf()
+                    name = tagName,
+                    pokemons = listOf()
                 )
             )
         })
@@ -64,8 +60,7 @@ class TagServiceTest {
         val tagName = "example"
         val pokemons = listOf<Pokemon>()
 
-        whenever(authRepository.authState).thenReturn(flow { emit(user) })
-        whenever(tagRepository.getTagByName(tagName, user)).thenReturn(flow {
+        whenever(tagRepository.getTagByName(tagName)).thenReturn(flow {
             emit(
                 null
             )
@@ -82,8 +77,7 @@ class TagServiceTest {
         val pokemons = listOf(Pokemon("charmander", ""))
         val newTag = Tag(name = tagName, pokemons = pokemons)
 
-        whenever(authRepository.authState).thenReturn(flow { emit(user) })
-        whenever(tagRepository.getTagByName(tagName, user)).thenReturn(flow {
+        whenever(tagRepository.getTagByName(tagName)).thenReturn(flow {
             emit(
                 null
             )
@@ -93,7 +87,7 @@ class TagServiceTest {
         tagService.createTag(tagName, pokemons)
 
         //Assert
-        Mockito.verify(tagRepository).createTag(newTag, user)
+        Mockito.verify(tagRepository).createTag(newTag)
     }
 
     @Test(expected = TagNotFoundException::class)
@@ -102,9 +96,8 @@ class TagServiceTest {
         val newTagName = "example"
         val pokemons = listOf(Pokemon("charmander", ""))
 
-        whenever(authRepository.authState).thenReturn(flow { emit(user) })
 
-        whenever(tagRepository.getTagByName(oldTagName, user)).thenReturn(flow {
+        whenever(tagRepository.getTagByName(oldTagName)).thenReturn(flow {
             emit(
                 null
             )
@@ -117,14 +110,14 @@ class TagServiceTest {
     @Test(expected = TagAlreadyExistsException::class)
     fun updateTag_throws_TagAlreadyExistsException() = runTest {
         //Arrange
-        val existingTag = Tag("existing", listOf())
-        val newTag = Tag("newTag", listOf())
+        val existingTag = Tag(name = "existing", pokemons = listOf())
+        val newTag = Tag(name = "newTag", pokemons = listOf())
         val newName = "newTag"
         val newPokemons = listOf(Pokemon("Pikachu", ""))
-        whenever(authRepository.authState).thenReturn(flow { emit(user) })
 
-        `when`(tagRepository.getTagByName("existing", user)).thenReturn(flowOf(existingTag))
-        `when`(tagRepository.getTagByName(newName, user)).thenReturn(flowOf(newTag))
+
+        `when`(tagRepository.getTagByName("existing")).thenReturn(flowOf(existingTag))
+        `when`(tagRepository.getTagByName(newName)).thenReturn(flowOf(newTag))
 
         //Act
         tagService.updateTag("existing", newName, newPokemons)
@@ -137,29 +130,27 @@ class TagServiceTest {
     @Test
     fun updateTag_success() = runTest {
         // Arrange
-        val existingTag = Tag("existing", listOf())
+        val existingTag = Tag(name = "existing", pokemons = listOf())
         val newName = "newTag"
         val newPokemons = listOf(Pokemon("Pikachu", ""))
         val user = User("uid", "email", "displayName")
 
-        whenever(authRepository.authState).thenReturn(flow { emit(user) })
 
 
-        whenever(tagRepository.getTagByName("existing", user)).thenReturn(flowOf(existingTag))
-        whenever(tagRepository.getTagByName(newName, user)).thenReturn(flowOf(null))
+        whenever(tagRepository.getTagByName("existing")).thenReturn(flowOf(existingTag))
+        whenever(tagRepository.getTagByName(newName)).thenReturn(flowOf(null))
 
         // Act
         tagService.updateTag("existing", newName, newPokemons)
 
         // Assert
         val argumentCaptor = argumentCaptor<Tag>()
-        verify(tagRepository).updateTag(argumentCaptor.capture(), eq(user))
+        verify(tagRepository).updateTag(argumentCaptor.capture())
         val capturedTag = argumentCaptor.firstValue
 
         assertEquals(newName, capturedTag.name)
         assertEquals(newPokemons, capturedTag.pokemons)
     }
-
 
 
 }

@@ -3,10 +3,10 @@ package com.core.database.pokemon.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "pokemons")
 data class PokemonEntity(
-    @PrimaryKey
-    val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long,
     val name: String,
-    val tagId: Int
+    var tagId: Long
 )
