@@ -103,10 +103,20 @@ fun PokedexNavGraph(
         composable("pokemon") {
             val viewModel = hiltViewModel<PokemonViewModel>()
             val state by viewModel.uiState.collectAsState()
+            val messageError by viewModel.errorMessage.collectAsState()
             PokemonScreen(
                 pokemonUiState = state,
                 getPokemons = { viewModel.getPokemons() },
-                onBackButton = { navHostController.navigateUp() })
+                onBackButton = { navHostController.navigateUp() },
+                saveTag = { tagName, pokemons ->
+                    viewModel.createTagWithPokemons(
+                        tagName,
+                        pokemons
+                    )
+                },
+                messageError = messageError
+            )
+
         }
 
         composable("tags") {

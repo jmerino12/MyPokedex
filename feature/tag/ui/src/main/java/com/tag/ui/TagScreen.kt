@@ -1,24 +1,20 @@
 package com.tag.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,15 +22,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,8 +32,9 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.pokemon.domain.model.Pokemon
+import com.tag.domain.model.Tag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +56,7 @@ fun TagScreen(
             TopAppBar(
                 title = { Text("Pokedex") },
                 actions = {
-                    IconButton(onClick =  goToPokemonScreen ) {
+                    IconButton(onClick = goToPokemonScreen) {
                         Icon(Icons.Default.AddCircle, contentDescription = "Add")
                     }
                 }
@@ -74,18 +65,28 @@ fun TagScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Pokedex",
+                        text = "Mis Tags pokemons",
                     )
                 },
+                actions = {
+                    IconButton(onClick = goToPokemonScreen) {
+                        Icon(Icons.Default.AddCircle, contentDescription = "Add")
+                    }
+                }
             )
         }
     }) {
+        val arrangement = if (tagUiState is TagUiState.SUCCESS) {
+            Arrangement.Top to Alignment.Start
+        } else {
+            Arrangement.Center to Alignment.CenterHorizontally
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = arrangement.first,
+            horizontalAlignment = arrangement.second
         ) {
             when {
                 tagUiState is TagUiState.LOADING -> {
@@ -94,8 +95,8 @@ fun TagScreen(
 
                 tagUiState is TagUiState.SUCCESS -> {
                     LazyColumn {
-                        items(tagUiState.tags) {
-
+                        items(tagUiState.tags) { tags ->
+                            TagItem(tag = tags)
                         }
                     }
                 }
@@ -119,9 +120,53 @@ fun TagScreen(
 
 }
 
+@Composable
+fun TagItem(modifier: Modifier = Modifier, tag: Tag) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp)
+
+    ) {
+        Text(text = tag.name, style = MaterialTheme.typography.titleLarge)
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            items(tag.pokemons) { pokemon ->
+                ItemPokemon(pokemon)
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemPokemon(pokemon: Pokemon) {
+    Text(text = pokemon.name, style = MaterialTheme.typography.bodyLarge)
+}
+
+@Preview
+@Composable
+private fun TagItemPreview() {
+    TagItem(
+        tag = Tag(0L, "Prueba", listOf(Pokemon("Pikachu", "", "")))
+    )
+}
+
 
 @Preview
 @Composable
 private fun TagScreenPreview() {
-    TagScreen(tagUiState = TagUiState.EMPTY, getTags = {}, goToPokemonScreen = {})
+    TagScreen(
+        tagUiState = TagUiState.SUCCESS(
+            tags = listOf(
+                Tag(
+                    0L,
+                    "Prueba",
+                    listOf(Pokemon("Pikachu", "", ""))
+                )
+            )
+        ), getTags = {}, goToPokemonScreen = {})
 }

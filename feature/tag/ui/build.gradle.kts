@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":feature:tag:domain"))
     implementation(project(":feature:tag:infrastructure"))
+    implementation(project(":feature:pokemon:domain"))
 
 
     implementation(libs.hilt.android)

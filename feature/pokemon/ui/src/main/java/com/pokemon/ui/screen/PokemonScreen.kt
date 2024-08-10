@@ -48,6 +48,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -64,6 +67,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -81,10 +85,14 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PokemonScreen(
-    modifier: Modifier = Modifier, pokemonUiState: PokemonUiState,
+    modifier: Modifier = Modifier,
+    pokemonUiState: PokemonUiState,
+    messageError: Int?,
     getPokemons: () -> Unit,
     onBackButton: () -> Unit,
+    saveTag: (String, List<Pokemon>) -> Unit
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     var isDialogVisible by remember { mutableStateOf(false) }
     var dialogText by remember { mutableStateOf("") }
 
@@ -141,7 +149,8 @@ fun PokemonScreen(
                     }
                 )
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         when {
             pokemonUiState is PokemonUiState.LOADING -> {
@@ -232,10 +241,29 @@ fun PokemonScreen(
                 }
 
             }
+
+            pokemonUiState is PokemonUiState.ERROR -> {
+
+            }
         }
         if (isDialogVisible) {
-            MinimalDialog(onDismissRequest = { isDialogVisible = false }, text = dialogText,
-                onTextChange = { dialogText = it })
+            MinimalDialog(
+                onDismissRequest = { isDialogVisible = false },
+                text = dialogText,
+                onTextChange = { dialogText = it },
+                selectedItems = selectedItems,
+                saveTag = saveTag,
+                resetSelectionMode = resetSelectionMode
+            )
+        }
+
+        if (messageError != null) {
+            val message = stringResource(id = messageError)
+            LaunchedEffect(messageError) {
+                snackbarHostState.showSnackbar(
+                    message = message,
+                )
+            }
         }
     }
 
@@ -322,7 +350,10 @@ private fun SelectionModeTopAppBar(
 fun MinimalDialog(
     text: String,
     onTextChange: (String) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    selectedItems: SnapshotStateList<Pokemon>,
+    saveTag: (String, List<Pokemon>) -> Unit,
+    resetSelectionMode: () -> Unit,
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -371,7 +402,11 @@ fun MinimalDialog(
                         Text("Cerrar")
                     }
                     Button(
-                        onClick = { onDismissRequest() }
+                        onClick = {
+                            saveTag(text, selectedItems)
+                            onDismissRequest()
+                            resetSelectionMode()
+                        }
                     ) {
                         Text("Aceptar")
                     }
@@ -390,12 +425,21 @@ private fun PokemonScreenPreview() {
     PokemonScreen(
         pokemonUiState = PokemonUiState.SUCCESS(listOf()),
         getPokemons = {},
-        onBackButton = {}
+        onBackButton = {},
+        saveTag = { _, _ -> },
+        messageError = null
     )
 }
 
 @Preview
 @Composable
 private fun DialogPreview() {
-    MinimalDialog(onDismissRequest = {}, onTextChange = { _ -> }, text = "dada")
+    MinimalDialog(
+        onDismissRequest = {},
+        onTextChange = { _ -> },
+        text = "dada",
+        saveTag = { _, _ -> },
+        selectedItems = SnapshotStateList(),
+        resetSelectionMode = {}
+    )
 }
