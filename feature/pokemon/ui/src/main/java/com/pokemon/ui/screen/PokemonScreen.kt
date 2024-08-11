@@ -66,6 +66,7 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.pokemon.domain.model.Pokemon
+import com.pokemon.ui.R
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -242,7 +243,6 @@ fun PokemonScreen(
                 onTextChange = { dialogText = it },
                 selectedItems = selectedItems,
                 saveTag = saveTag,
-                resetSelectionMode = resetSelectionMode
             )
         }
 
@@ -256,10 +256,12 @@ fun PokemonScreen(
         }
         if (successCreateTag != null) {
             val message = stringResource(id = successCreateTag)
+            val actionLabel = stringResource(R.string.ok)
+
             LaunchedEffect(messageError) {
                 val snackBarResult = snackbarHostState.showSnackbar(
                     message = message,
-                    actionLabel = "Ententido"
+                    actionLabel = actionLabel
                 )
                 if (snackBarResult == SnackbarResult.ActionPerformed) {
                     resetSelectionMode()
@@ -327,7 +329,7 @@ private fun SelectionModeTopAppBar(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = "Crear Tag",
+                                text = stringResource(R.string.create_tag),
                             )
                         },
                         onClick = {
@@ -357,7 +359,6 @@ fun MinimalDialog(
     onDismissRequest: () -> Unit,
     selectedItems: SnapshotStateList<Pokemon>,
     saveTag: (String, List<Pokemon>) -> Unit,
-    resetSelectionMode: () -> Unit,
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -375,7 +376,7 @@ fun MinimalDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Creación de tag",
+                    text = stringResource(R.string.tag_creation),
                     style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp),
                     modifier = Modifier
                         .wrapContentSize(Alignment.Center),
@@ -387,7 +388,7 @@ fun MinimalDialog(
                     value = text,
                     maxLines = 1,
                     onValueChange = { onTextChange(it) },
-                    label = { Text("Ingrese nombre") },
+                    label = { Text(stringResource(R.string.enter_name)) },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done
                     ),
@@ -403,7 +404,7 @@ fun MinimalDialog(
                     Button(
                         onClick = { onDismissRequest() }
                     ) {
-                        Text("Cerrar")
+                        Text(stringResource(R.string.close))
                     }
                     Button(
                         onClick = {
@@ -411,7 +412,7 @@ fun MinimalDialog(
                             onDismissRequest()
                         }
                     ) {
-                        Text("Aceptar")
+                        Text(stringResource(R.string.accept))
                     }
                 }
 
@@ -445,6 +446,5 @@ private fun DialogPreview() {
         text = "dada",
         saveTag = { _, _ -> },
         selectedItems = SnapshotStateList(),
-        resetSelectionMode = {}
     )
 }

@@ -26,9 +26,7 @@ class LoginViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         _uiState.value = LoginUiState.LOADING
-
         viewModelScope.launch(ioDispatcher) {
-            delay(10000)
             try {
                 authRepository.logInWithEmailAndPassword(LoginWithEmailAndPassword(email, password))
                 _uiState.value = LoginUiState.SUCCESS

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="sing_up">Registrarse</string>
+    <string name="or">O</string>
+</resources>

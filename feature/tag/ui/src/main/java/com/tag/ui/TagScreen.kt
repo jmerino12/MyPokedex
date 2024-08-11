@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -52,8 +56,10 @@ fun TagScreen(
     tagUiState: TagUiState,
     getTags: () -> Unit,
     goToPokemonScreen: () -> Unit,
-    deleteTag: (String) -> Unit
-) {
+    deleteTag: (String) -> Unit,
+    logout: () -> Unit,
+
+    ) {
     val composition by
     rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_state))
     LaunchedEffect(Unit) {
@@ -65,22 +71,42 @@ fun TagScreen(
             TopAppBar(
                 title = { Text("Pokedex") },
                 actions = {
-                    IconButton(onClick = goToPokemonScreen) {
-                        Icon(Icons.Default.AddCircle, contentDescription = "Add")
+                    Row {
+                        IconButton(onClick = goToPokemonScreen) {
+                            Icon(Icons.Default.AddCircle, contentDescription = "Add")
+                        }
+
+                        IconButton(onClick = logout) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ExitToApp,
+                                contentDescription = "Close app"
+                            )
+                        }
                     }
+
                 }
             )
         } else {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Mis Tags pokemons",
+                        text = stringResource(R.string.my_tags_pokemons),
                     )
                 },
                 actions = {
-                    IconButton(onClick = goToPokemonScreen) {
-                        Icon(Icons.Default.AddCircle, contentDescription = "Add")
+                    Row {
+                        IconButton(onClick = goToPokemonScreen) {
+                            Icon(Icons.Default.AddCircle, contentDescription = "Add")
+                        }
+
+                        IconButton(onClick = logout) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ExitToApp,
+                                contentDescription = "Close app"
+                            )
+                        }
                     }
+
                 }
             )
         }
@@ -117,7 +143,7 @@ fun TagScreen(
                         modifier = Modifier.size(200.dp)
                     )
                     Text(
-                        text = "No hay tags te invitamos a crear.",
+                        text = stringResource(R.string.there_are_no_labels_you_can_create_your_own),
                         style = MaterialTheme.typography.titleLarge
                     )
                 }
@@ -203,5 +229,5 @@ private fun TagScreenPreview() {
                     listOf(Pokemon("Pikachu", "", ""))
                 )
             )
-        ), getTags = {}, goToPokemonScreen = {}, deleteTag = {})
+        ), getTags = {}, goToPokemonScreen = {}, deleteTag = {}, logout = {})
 }

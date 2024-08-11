@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.auth.ui.R
 
 @Composable
 fun LoginScreen(
@@ -72,7 +74,7 @@ fun LoginScreen(
                     TextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = { Text("Email") },
+                        label = { Text(stringResource(R.string.email)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                         modifier = Modifier.fillMaxWidth(fraction = 0.8f)
@@ -83,7 +85,7 @@ fun LoginScreen(
                     TextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("Contraseña") },
+                        label = { Text(stringResource(R.string.password)) },
                         singleLine = true,
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -98,7 +100,7 @@ fun LoginScreen(
                     TextButton(onClick = {
                         onLogin(email, password)
                     }) {
-                        Text(text = "Ingresar")
+                        Text(text = stringResource(R.string.login))
                     }
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -113,7 +115,7 @@ fun LoginScreen(
                         )
 
 
-                        Text(text = "O", modifier = Modifier.padding(horizontal = 8.dp))
+                        Text(text = stringResource(R.string.or), modifier = Modifier.padding(horizontal = 8.dp))
 
 
                         HorizontalDivider(
@@ -128,7 +130,7 @@ fun LoginScreen(
 
                     TextButton(onClick = { goToRegisterScreen() }) {
                         Text(
-                            text = "Registrarse",
+                            text = stringResource(R.string.sing_up),
                             style = TextStyle(textDecoration = TextDecoration.Underline)
                         )
                     }

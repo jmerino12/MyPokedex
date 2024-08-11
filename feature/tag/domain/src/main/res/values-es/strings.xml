@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tag_already_exists">El tag ya existe.</string>
+    <string name="tag_already_not_found">El tag no existe.</string>
+    <string name="tag_there_must_be_at_least_one_pokemon">Un tag debe tener al menos un Pokemon.</string>
+</resources>

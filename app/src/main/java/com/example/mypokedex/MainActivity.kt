@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
                     val state by viewModel.uiState.collectAsState()
                     PokedexNavGraph(
                         modifier = Modifier.padding(innerPadding),
-                        state = state
+                        state = state,
+                        logout = { viewModel.logout() },
                     )
                 }
             }
@@ -55,19 +56,18 @@ class MainActivity : ComponentActivity() {
 fun PokedexNavGraph(
     modifier: Modifier,
     state: AuthUiState,
+    logout: () -> Unit,
     navHostController: NavHostController = rememberNavController(),
 ) {
     LaunchedEffect(state) {
         when (state) {
-
             AuthUiState.AUTHENTICATED -> navHostController.navigate("tags") {
-
+                popUpTo("login") { inclusive = true }
             }
 
             AuthUiState.UNAUTHENTICATED -> navHostController.navigate("login") {
-
+                popUpTo("tags") { inclusive = true }
             }
-
             else -> Unit
         }
     }
@@ -128,7 +128,9 @@ fun PokedexNavGraph(
                 tagUiState = uiState,
                 getTags = { viewModel.getAllTags() },
                 goToPokemonScreen = { navHostController.navigate("pokemon") },
-                deleteTag = {tagName -> viewModel.deleteTag(tagName)})
+                logout = logout,
+                deleteTag = { tagName -> viewModel.deleteTag(tagName) })
+
         }
 
     }

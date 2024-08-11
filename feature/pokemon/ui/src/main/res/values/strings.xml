@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="success_message">Tag created successfully</string>
+    <string name="create_tag">Create tag</string>
+    <string name="close">Close</string>
+    <string name="accept">Accept</string>
+    <string name="ok">Ok</string>
+    <string name="enter_name">Enter name</string>
+    <string name="tag_creation">Tag creation</string>
 </resources>

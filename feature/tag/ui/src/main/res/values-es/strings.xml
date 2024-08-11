@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="there_are_no_labels_you_can_create_your_own">No hay tags, puedes crear uno</string>
+    <string name="my_tags_pokemons">Mis tags pokemon</string>
+</resources>
