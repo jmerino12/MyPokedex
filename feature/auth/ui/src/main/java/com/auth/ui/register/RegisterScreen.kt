@@ -17,11 +17,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -42,13 +46,16 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerUiState: RegisterUiState,
     goBackScreen: () -> Unit,
+    messageError: Int?,
     onRegisterUser: (String, String, String) -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     var name by remember { mutableStateOf("Jonathan Meriño") }
     var email by remember { mutableStateOf("jmerino1204@gmail.com") }
     var password by remember { mutableStateOf("123456789") }
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(title = { }, navigationIcon = {
                 IconButton(onClick = { goBackScreen() }) {
@@ -124,7 +131,14 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
-
+            if (messageError != null) {
+                val message = stringResource(id = messageError)
+                LaunchedEffect(messageError) {
+                    snackbarHostState.showSnackbar(
+                        message = message,
+                    )
+                }
+            }
 
         }
     }
@@ -136,6 +150,7 @@ private fun RegisterScreenPreview() {
     RegisterScreen(
         registerUiState = RegisterUiState.LOADING,
         goBackScreen = {},
+        messageError = null,
         onRegisterUser = { _, _, _ ->
         }
     )

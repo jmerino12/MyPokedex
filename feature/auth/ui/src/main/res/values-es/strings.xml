@@ -7,5 +7,5 @@
     <string name="or">O</string>
     <string name="general_error">Ha ocurrido un error, intente nuevamente.</string>
     <string name="invalid_credential">Credenciales invalidas</string>
-
+    <string name="invalid_email_already_in_use">El email se encuentra en uso.</string>
 </resources>

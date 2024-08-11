@@ -7,4 +7,5 @@
     <string name="or">or</string>
     <string name="general_error">An error has occurred, please try again.</string>
     <string name="invalid_credential">Invalid credentials</string>
+    <string name="invalid_email_already_in_use">The email address is already in use</string>
 </resources>

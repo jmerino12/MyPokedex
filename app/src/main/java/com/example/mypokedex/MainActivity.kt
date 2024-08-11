@@ -73,8 +73,7 @@ fun PokedexNavGraph(
         }
     }
 
-
-    NavHost(navController = navHostController, startDestination = "tags") {
+    NavHost(navController = navHostController, startDestination = "login") {
         composable("login") {
             val viewModel = hiltViewModel<LoginViewModel>()
             val uiState by viewModel.uiState.collectAsState()
@@ -90,9 +89,11 @@ fun PokedexNavGraph(
         composable("register") {
             val viewModel = hiltViewModel<RegisterViewModel>()
             val uiState by viewModel.uiState.collectAsState()
+            val messageError by viewModel.errorMessage.collectAsState()
             RegisterScreen(
                 registerUiState = uiState,
                 goBackScreen = { navHostController.navigateUp() },
+                messageError = messageError,
                 onRegisterUser = { email, password, name ->
                     viewModel.register(
                         email,
