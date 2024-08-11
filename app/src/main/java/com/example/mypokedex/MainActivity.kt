@@ -68,6 +68,7 @@ fun PokedexNavGraph(
             AuthUiState.UNAUTHENTICATED -> navHostController.navigate("login") {
                 popUpTo("tags") { inclusive = true }
             }
+
             else -> Unit
         }
     }
@@ -77,10 +78,13 @@ fun PokedexNavGraph(
         composable("login") {
             val viewModel = hiltViewModel<LoginViewModel>()
             val uiState by viewModel.uiState.collectAsState()
+            val messageError by viewModel.errorMessage.collectAsState()
             LoginScreen(
                 loginUiState = uiState,
                 goToRegisterScreen = { navHostController.navigate("register") },
-                onLogin = { email, pass -> viewModel.login(email = email, password = pass) })
+                onLogin = { email, pass -> viewModel.login(email = email, password = pass) },
+                messageError = messageError
+            )
         }
 
         composable("register") {

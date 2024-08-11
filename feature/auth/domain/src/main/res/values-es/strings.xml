@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email_exception_message">El email es incorrecto.</string>
+    <string name="password_exception_message">La contraseña no puede estar vacia.</string>
+
+</resources>

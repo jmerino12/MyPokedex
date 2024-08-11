@@ -14,10 +14,13 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,14 +43,19 @@ import com.auth.ui.R
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginUiState: LoginUiState,
+    messageError: Int?,
     onLogin: (String, String) -> Unit,
     goToRegisterScreen: () -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
-    Scaffold {
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
 
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -137,6 +145,15 @@ fun LoginScreen(
                 }
             }
 
+            if (messageError != null) {
+                val message = stringResource(id = messageError)
+                LaunchedEffect(messageError) {
+                    snackbarHostState.showSnackbar(
+                        message = message,
+                    )
+                }
+            }
+
 
         }
 
@@ -151,6 +168,7 @@ private fun LoginScreenPreview() {
     LoginScreen(
         loginUiState = LoginUiState.INITIAL,
         goToRegisterScreen = {},
+        messageError = null,
         onLogin = { _, _ -> })
 }
 

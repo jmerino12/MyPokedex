@@ -5,4 +5,6 @@
     <string name="login">Login</string>
     <string name="sing_up">Sing up</string>
     <string name="or">or</string>
+    <string name="general_error">An error has occurred, please try again.</string>
+    <string name="invalid_credential">Invalid credentials</string>
 </resources>

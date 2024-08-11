@@ -6,6 +6,7 @@ import com.auth.domain.model.User
 import com.auth.domain.repository.AuthRepository
 import com.auth.infrastructure.anticorruption.UserTranslate
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -35,7 +36,7 @@ class AuthFirebaseRepository @Inject constructor(
         try {
             auth.createUserWithEmailAndPassword(register.email, register.password).await()
             singIn(LoginWithEmailAndPassword(register.email, register.password))
-        } catch (e: Exception) {
+        } catch (e: FirebaseAuthException) {
             throw e
         }
     }
@@ -48,7 +49,7 @@ class AuthFirebaseRepository @Inject constructor(
     private suspend fun singIn(login: LoginWithEmailAndPassword) {
         try {
             auth.signInWithEmailAndPassword(login.email, login.password).await()
-        } catch (e: Exception) {
+        } catch (e: FirebaseAuthException) {
             throw e
         }
     }

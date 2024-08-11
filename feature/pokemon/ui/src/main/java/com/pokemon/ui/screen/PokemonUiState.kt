@@ -1,6 +1,5 @@
 package com.pokemon.ui.screen
 
-import androidx.annotation.StringRes
 import com.pokemon.domain.model.Pokemon
 
 sealed class PokemonUiState {

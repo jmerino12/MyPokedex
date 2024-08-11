@@ -48,7 +48,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.ksp)
 
-
+    implementation(libs.firebase.auth.interop)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

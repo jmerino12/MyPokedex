@@ -5,4 +5,7 @@
     <string name="login">Ingresar</string>
     <string name="sing_up">Registrarse</string>
     <string name="or">O</string>
+    <string name="general_error">Ha ocurrido un error, intente nuevamente.</string>
+    <string name="invalid_credential">Credenciales invalidas</string>
+
 </resources>
