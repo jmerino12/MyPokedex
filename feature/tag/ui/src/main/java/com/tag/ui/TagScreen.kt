@@ -1,5 +1,8 @@
 package com.tag.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -48,7 +51,8 @@ fun TagScreen(
     modifier: Modifier = Modifier,
     tagUiState: TagUiState,
     getTags: () -> Unit,
-    goToPokemonScreen: () -> Unit
+    goToPokemonScreen: () -> Unit,
+    deleteTag: (String) -> Unit
 ) {
     val composition by
     rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_state))
@@ -101,7 +105,7 @@ fun TagScreen(
                 tagUiState is TagUiState.SUCCESS -> {
                     LazyColumn {
                         items(tagUiState.tags) { tags ->
-                            TagItem(tag = tags)
+                            TagItem(tag = tags, deleteTag = deleteTag)
                         }
                     }
                 }
@@ -125,12 +129,18 @@ fun TagScreen(
 
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TagItem(modifier: Modifier = Modifier, tag: Tag) {
+
+fun TagItem(modifier: Modifier = Modifier, tag: Tag, deleteTag: (String) -> Unit) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp)
+            .combinedClickable(
+                onClick = {},
+                onLongClick = { deleteTag(tag.name) },
+            )
 
     ) {
         Text(text = tag.name, style = MaterialTheme.typography.titleLarge)
@@ -175,6 +185,7 @@ fun ItemPokemon(pokemon: Pokemon) {
 @Composable
 private fun TagItemPreview() {
     TagItem(
+        deleteTag = {},
         tag = Tag(0L, "Prueba", listOf(Pokemon("Pikachu", "", "")))
     )
 }
@@ -192,5 +203,5 @@ private fun TagScreenPreview() {
                     listOf(Pokemon("Pikachu", "", ""))
                 )
             )
-        ), getTags = {}, goToPokemonScreen = {})
+        ), getTags = {}, goToPokemonScreen = {}, deleteTag = {})
 }

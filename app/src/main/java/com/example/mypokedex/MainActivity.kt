@@ -127,7 +127,8 @@ fun PokedexNavGraph(
             TagScreen(
                 tagUiState = uiState,
                 getTags = { viewModel.getAllTags() },
-                goToPokemonScreen = { navHostController.navigate("pokemon") })
+                goToPokemonScreen = { navHostController.navigate("pokemon") },
+                deleteTag = {tagName -> viewModel.deleteTag(tagName)})
         }
 
     }

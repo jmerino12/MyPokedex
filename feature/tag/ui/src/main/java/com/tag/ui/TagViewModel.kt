@@ -35,7 +35,8 @@ class TagViewModel @Inject constructor(
                     } else {
                         val myTagsWithImages = tags.map { tag ->
                             val pokemonsWithImages = tag.pokemons.map { pokemon ->
-                                val imageUrl = pokemonRepository.getPokemonDetail(pokemon.url).first()
+                                val imageUrl =
+                                    pokemonRepository.getPokemonDetail(pokemon.url).first()
                                 pokemon.copy(image = imageUrl.image)
                             }
                             tag.copy(pokemons = pokemonsWithImages)
@@ -46,6 +47,18 @@ class TagViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = TagUiState.ERROR
             }
+        }
+    }
+
+    fun deleteTag(tagName: String) {
+        _uiState.value = TagUiState.LOADING
+        viewModelScope.launch(ioDispatcher) {
+            try {
+                tagService.deleteTag(tagName)
+            } catch (e: Exception) {
+                _uiState.value = TagUiState.ERROR
+            }
+
         }
     }
 
