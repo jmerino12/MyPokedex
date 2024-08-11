@@ -74,7 +74,7 @@ Versión: 2.48
 ### [Firebase Auth](https://firebase.google.com/docs/auth?hl=es-419) - Firebase Authentication
 Para manejar el logueo y registro de los usuarios.
 
-### [Firebase BoM](https://pub.dev/packages/path) - Firebase
+### [Firebase BoM](https://firebase.google.com/docs/android/learn-more?hl=es-419) - Firebase
 La BoM (lista de materiales) de Firebase para Android te permite administrar todas las versiones de tus bibliotecas de Firebase con solo especificar una versión, la versión de la BoM.
 
 versión: 33.1.2
@@ -89,7 +89,6 @@ Para animar el empty state de los estados
 
 Versión: 6.0.1
 
-**Nota:** Se recomienda actualizar las versiones de las dependencias del bloque al iniciar un nuevo proyecto.
 
 ## Versión
 
