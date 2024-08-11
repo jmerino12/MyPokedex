@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -50,7 +51,6 @@ import com.tag.domain.model.Tag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
 fun TagScreen(
     modifier: Modifier = Modifier,
     tagUiState: TagUiState,
@@ -58,7 +58,6 @@ fun TagScreen(
     goToPokemonScreen: () -> Unit,
     deleteTag: (String) -> Unit,
     logout: () -> Unit,
-
     ) {
     val composition by
     rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty_state))
@@ -144,7 +143,9 @@ fun TagScreen(
                     )
                     Text(
                         text = stringResource(R.string.there_are_no_labels_you_can_create_your_own),
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }
             }

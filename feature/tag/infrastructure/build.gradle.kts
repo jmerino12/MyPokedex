@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.corrutines)
     implementation(platform(libs.firebaseBom))
-    implementation(libs.firebase.store)
     implementation(libs.room.ktx)
 
 
