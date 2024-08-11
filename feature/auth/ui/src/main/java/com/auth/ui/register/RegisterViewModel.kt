@@ -45,11 +45,16 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun clearMessage() {
+        _errorMessage.value = null
+    }
+
     private fun handleFirebaseError(firebaseAuthException: FirebaseAuthException) {
         when (firebaseAuthException.errorCode) {
             "ERROR_EMAIL_ALREADY_IN_USE" -> {
                 _errorMessage.value = R.string.invalid_email_already_in_use
             }
+
             else -> {
                 _errorMessage.value = R.string.general_error
             }

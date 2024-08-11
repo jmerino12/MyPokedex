@@ -79,7 +79,7 @@ class TagServiceTest {
     fun createTag_withEmptyPokemonList_success() = runTest {
         //Arrange
         val tagName = "example"
-        val pokemons = listOf(Pokemon("charmander", ""))
+        val pokemons = listOf(Pokemon("charmander", "", url = ""))
         val newTag = Tag(name = tagName, pokemons = pokemons)
 
         whenever(tagRepository.getTagByName(tagName)).thenReturn(flow {
@@ -99,7 +99,7 @@ class TagServiceTest {
     fun updateTag_throws_TagNotFoundException() = runTest {
         val oldTagName = "example"
         val newTagName = "example"
-        val pokemons = listOf(Pokemon("charmander", ""))
+        val pokemons = listOf(Pokemon("charmander", "", url = ""))
 
 
         whenever(tagRepository.getTagByName(oldTagName)).thenReturn(flow {
@@ -118,7 +118,7 @@ class TagServiceTest {
         val existingTag = Tag(name = "existing", pokemons = listOf())
         val newTag = Tag(name = "newTag", pokemons = listOf())
         val newName = "newTag"
-        val newPokemons = listOf(Pokemon("Pikachu", ""))
+        val newPokemons = listOf(Pokemon("Pikachu", "", url = ""))
 
 
         `when`(tagRepository.getTagByName("existing")).thenReturn(flowOf(existingTag))
@@ -137,7 +137,7 @@ class TagServiceTest {
         // Arrange
         val existingTag = Tag(name = "existing", pokemons = listOf())
         val newName = "newTag"
-        val newPokemons = listOf(Pokemon("Pikachu", ""))
+        val newPokemons = listOf(Pokemon("Pikachu", "", url = ""))
         val user = User("uid", "email", "displayName")
 
 
@@ -161,7 +161,7 @@ class TagServiceTest {
     @Test
     fun addPokemonsToTag_success() = runTest {
         val existingTag = Tag(name = "existing", pokemons = listOf())
-        val pokemons = listOf(Pokemon("charmander", ""))
+        val pokemons = listOf(Pokemon("charmander", "", url = ""))
 
 
         whenever(tagRepository.getTagByName(existingTag.name)).thenReturn(flow {
@@ -181,7 +181,7 @@ class TagServiceTest {
     @Test(expected = TagNotFoundException::class)
     fun addPokemonsToTag_throw() = runTest {
         val existingTag = Tag(name = "existing", pokemons = listOf())
-        val pokemons = listOf(Pokemon("charmander", ""))
+        val pokemons = listOf(Pokemon("charmander", "", url = ""))
 
 
         whenever(tagRepository.getTagByName(existingTag.name)).thenReturn(flow {

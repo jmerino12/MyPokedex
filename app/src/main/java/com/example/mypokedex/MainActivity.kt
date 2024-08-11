@@ -82,7 +82,8 @@ fun PokedexNavGraph(
                 loginUiState = uiState,
                 goToRegisterScreen = { navHostController.navigate("register") },
                 onLogin = { email, pass -> viewModel.login(email = email, password = pass) },
-                messageError = messageError
+                messageError = messageError,
+                clearMessage = { viewModel.clearMessage() }
             )
         }
 
@@ -100,7 +101,8 @@ fun PokedexNavGraph(
                         password,
                         name
                     )
-                }
+                },
+                clearMessageError = { viewModel.clearMessage() }
             )
         }
 

@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.auth.ui.R
 import com.auth.ui.login.LoginUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +49,7 @@ fun RegisterScreen(
     goBackScreen: () -> Unit,
     messageError: Int?,
     onRegisterUser: (String, String, String) -> Unit,
+    clearMessageError: () -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var name by remember { mutableStateOf("Jonathan Meriño") }
@@ -79,7 +81,7 @@ fun RegisterScreen(
 
                 else -> {
                     Text(
-                        text = "Registrarse",
+                        text = stringResource(R.string.sing_up),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -89,7 +91,7 @@ fun RegisterScreen(
                     TextField(
                         value = name,
                         onValueChange = { name = it },
-                        label = { Text("Nombre") },
+                        label = { Text(stringResource(R.string.name)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                         modifier = Modifier.fillMaxWidth(fraction = 0.8f)
@@ -100,7 +102,7 @@ fun RegisterScreen(
                     TextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = { Text("Email") },
+                        label = { Text(stringResource(R.string.email)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                         modifier = Modifier.fillMaxWidth(fraction = 0.8f)
@@ -111,7 +113,7 @@ fun RegisterScreen(
                     TextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("Contraseña") },
+                        label = { Text(stringResource(id = R.string.password)) },
                         singleLine = true,
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -126,7 +128,7 @@ fun RegisterScreen(
                     TextButton(onClick = {
                         onRegisterUser(email, password, name)
                     }) {
-                        Text(text = "Registrarse")
+                        Text(text = stringResource(id = R.string.sing_up))
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -137,6 +139,7 @@ fun RegisterScreen(
                     snackbarHostState.showSnackbar(
                         message = message,
                     )
+                    clearMessageError()
                 }
             }
 
@@ -152,7 +155,8 @@ private fun RegisterScreenPreview() {
         goBackScreen = {},
         messageError = null,
         onRegisterUser = { _, _, _ ->
-        }
+        },
+        clearMessageError = {}
     )
 }
 

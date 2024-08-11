@@ -41,8 +41,11 @@ class LoginViewModel @Inject constructor(
             } catch (e: AuthException) {
                 handleExceptionOfDomain(e)
             }
-
         }
+    }
+
+    fun clearMessage() {
+        _errorMessage.value = null
     }
 
     private fun handleExceptionOfDomain(e: AuthException) {

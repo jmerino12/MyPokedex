@@ -46,6 +46,7 @@ fun LoginScreen(
     messageError: Int?,
     onLogin: (String, String) -> Unit,
     goToRegisterScreen: () -> Unit,
+    clearMessage: () -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -123,7 +124,10 @@ fun LoginScreen(
                         )
 
 
-                        Text(text = stringResource(R.string.or), modifier = Modifier.padding(horizontal = 8.dp))
+                        Text(
+                            text = stringResource(R.string.or),
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
 
 
                         HorizontalDivider(
@@ -151,6 +155,8 @@ fun LoginScreen(
                     snackbarHostState.showSnackbar(
                         message = message,
                     )
+
+                    clearMessage()
                 }
             }
 
@@ -169,7 +175,9 @@ private fun LoginScreenPreview() {
         loginUiState = LoginUiState.INITIAL,
         goToRegisterScreen = {},
         messageError = null,
-        onLogin = { _, _ -> })
+        onLogin = { _, _ -> },
+        clearMessage = {}
+    )
 }
 
 
