@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.core.common.IoDispatcher
 import com.pokemon.domain.model.Pokemon
 import com.pokemon.domain.repositories.PokemonRepository
+import com.pokemon.ui.R
 import com.tag.domain.exceptions.TagException
 import com.tag.domain.service.TagService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +30,9 @@ class PokemonViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow<Int?>(null)
     val errorMessage: StateFlow<Int?> = _errorMessage.asStateFlow()
 
+    private val _successCreateTag = MutableStateFlow<Int?>(null)
+    val successCreateTag: StateFlow<Int?> = _successCreateTag.asStateFlow()
+
     fun getPokemons() {
         _uiState.value = PokemonUiState.LOADING
         viewModelScope.launch(ioDispatcher) {
@@ -52,14 +56,20 @@ class PokemonViewModel @Inject constructor(
 
     fun createTagWithPokemons(tagName: String, pokemons: List<Pokemon>) {
         val currentState = _uiState.value
+        _uiState.value = PokemonUiState.LOADING
         viewModelScope.launch(ioDispatcher) {
             try {
                 tagService.createTag(tagName, pokemons)
                 _uiState.value = currentState
+                _successCreateTag.value = R.string.success_message
             } catch (e: TagException) {
                 _errorMessage.value = e.messageResId
             }
         }
+    }
+
+    fun resetSuccessCreateTag(){
+        _successCreateTag.value = null
     }
 
 }

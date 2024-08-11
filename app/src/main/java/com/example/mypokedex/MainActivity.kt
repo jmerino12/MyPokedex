@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -77,18 +76,18 @@ fun PokedexNavGraph(
     NavHost(navController = navHostController, startDestination = "tags") {
         composable("login") {
             val viewModel = hiltViewModel<LoginViewModel>()
-            val state by viewModel.uiState.collectAsState()
+            val uiState by viewModel.uiState.collectAsState()
             LoginScreen(
-                loginUiState = state,
+                loginUiState = uiState,
                 goToRegisterScreen = { navHostController.navigate("register") },
                 onLogin = { email, pass -> viewModel.login(email = email, password = pass) })
         }
 
         composable("register") {
             val viewModel = hiltViewModel<RegisterViewModel>()
-            val state by viewModel.uiState.collectAsState()
+            val uiState by viewModel.uiState.collectAsState()
             RegisterScreen(
-                registerUiState = state,
+                registerUiState = uiState,
                 goBackScreen = { navHostController.navigateUp() },
                 onRegisterUser = { email, password, name ->
                     viewModel.register(
@@ -102,10 +101,11 @@ fun PokedexNavGraph(
 
         composable("pokemon") {
             val viewModel = hiltViewModel<PokemonViewModel>()
-            val state by viewModel.uiState.collectAsState()
+            val uiState by viewModel.uiState.collectAsState()
             val messageError by viewModel.errorMessage.collectAsState()
+            val successCreateTag by viewModel.successCreateTag.collectAsState()
             PokemonScreen(
-                pokemonUiState = state,
+                pokemonUiState = uiState,
                 getPokemons = { viewModel.getPokemons() },
                 onBackButton = { navHostController.navigateUp() },
                 saveTag = { tagName, pokemons ->
@@ -114,16 +114,18 @@ fun PokedexNavGraph(
                         pokemons
                     )
                 },
-                messageError = messageError
+                messageError = messageError,
+                successCreateTag = successCreateTag,
+                resetSuccessCreateTag = { viewModel.resetSuccessCreateTag() }
             )
 
         }
 
         composable("tags") {
             val viewModel = hiltViewModel<TagViewModel>()
-            val state by viewModel.uiState.collectAsState()
+            val uiState by viewModel.uiState.collectAsState()
             TagScreen(
-                tagUiState = state,
+                tagUiState = uiState,
                 getTags = { viewModel.getAllTags() },
                 goToPokemonScreen = { navHostController.navigate("pokemon") })
         }
