@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,8 +28,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -144,7 +149,26 @@ fun TagItem(modifier: Modifier = Modifier, tag: Tag) {
 
 @Composable
 fun ItemPokemon(pokemon: Pokemon) {
-    Text(text = pokemon.name, style = MaterialTheme.typography.bodyLarge)
+    Card(onClick = { /*TODO*/ }) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(3.dp)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(pokemon.image)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
+                contentDescription = pokemon.name,
+                modifier = Modifier.size(70.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = pokemon.name, style = MaterialTheme.typography.bodyLarge)
+        }
+    }
+
+
 }
 
 @Preview

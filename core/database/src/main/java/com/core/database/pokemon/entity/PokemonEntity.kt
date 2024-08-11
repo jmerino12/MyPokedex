@@ -8,5 +8,6 @@ data class PokemonEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
+    val url: String,
     var tagId: Long
 )

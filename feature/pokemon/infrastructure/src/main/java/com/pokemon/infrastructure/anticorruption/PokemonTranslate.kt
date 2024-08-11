@@ -21,11 +21,11 @@ class PokemonTranslate {
 
 
         fun fromDomainToEntity(pokemon: Pokemon, tagId: Long): PokemonEntity {
-            return PokemonEntity(0, pokemon.name, tagId)
+            return PokemonEntity(0, pokemon.name, pokemon.url, tagId)
         }
 
         fun fromEntityToDomain(pokemonEntity: PokemonEntity): Pokemon {
-            return Pokemon(pokemonEntity.name, "", url = "")
+            return Pokemon(pokemonEntity.name, "", url = pokemonEntity.url)
         }
     }
 }
